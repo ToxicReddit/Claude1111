@@ -1,0 +1,98 @@
+import sys, os
+sys.path.insert(0, os.path.dirname(__file__))
+from helpers import Card, write_tsv, summarize
+
+TAG_COURSE = "chem102"
+UNIT = "stoichiometry"
+cards = []
+
+def add(front, back, sub, kind):
+    cards.append(Card(front, back, f"{TAG_COURSE} {UNIT}::{sub} {kind}"))
+
+# ---------- CONCEPT ----------
+add("Define the mole and Avogadro's number.",
+    "A mole is the SI unit for amount of substance, defined as exactly 6.022 x 10^23 particles (atoms, molecules, ions, etc.) — this value is Avogadro's number (N_A).",
+    "moles", "concept")
+
+add("What is molar mass, and what are its units?",
+    "Molar mass is the mass of one mole of a substance, in grams per mole (g/mol). Numerically, it equals the substance's atomic/molecular/formula weight (from the periodic table for elements, or the sum of atomic masses for compounds).",
+    "moles", "concept")
+
+add("Distinguish empirical formula from molecular formula.",
+    "The empirical formula gives the simplest whole-number ratio of atoms in a compound. The molecular formula gives the actual number of atoms of each element in one molecule and is always a whole-number multiple of the empirical formula (e.g., empirical CH2O, molecular C6H12O6, multiple = 6).",
+    "empirical_formula", "concept")
+
+add("What is a balanced chemical equation, and why must equations be balanced?",
+    "A balanced equation has equal numbers of atoms of each element on both the reactant and product sides, achieved by adjusting stoichiometric coefficients. Equations must be balanced to satisfy the law of conservation of mass — atoms are neither created nor destroyed in an ordinary chemical reaction.",
+    "balancing_equations", "concept")
+
+add("What is the limiting reactant (limiting reagent) in a reaction?",
+    "The reactant that is completely consumed first, thereby stopping the reaction and limiting the maximum amount of product that can form. The other reactant(s), present in more than the stoichiometrically required amount, are called excess reactants.",
+    "limiting_reactant", "concept")
+
+add("Define theoretical yield, actual yield, and percent yield.",
+    "Theoretical yield is the maximum amount of product predicted by stoichiometry (assuming the limiting reactant fully converts, no losses). Actual yield is the amount actually obtained/measured in the lab. Percent yield = (actual yield / theoretical yield) x 100%.",
+    "percent_yield", "concept")
+
+add("Why is percent yield almost always less than 100% in real laboratory work?",
+    "Real reactions rarely go to 100% completion, and additional product is often lost during transfer, filtration, purification, or side reactions may consume some reactant to form unwanted byproducts. All of these reduce actual yield below the theoretical maximum, so percent yield is typically below 100%.",
+    "percent_yield", "concept")
+
+add("What are the general steps for a mole-to-mole stoichiometry conversion between two substances in a reaction?",
+    "1) Start with a known quantity (mass, volume, or moles) of substance A.<br>2) Convert to moles of A (using molar mass, molarity, or gas law as needed).<br>3) Use the balanced equation's mole ratio to convert moles of A to moles of substance B.<br>4) Convert moles of B to the desired final unit (mass, volume, particles, etc.) if needed.",
+    "stoichiometry_conversions", "concept")
+
+add("Why must you convert to moles before using the coefficients of a balanced equation, rather than working directly in grams?",
+    "Balanced equation coefficients represent mole ratios (ratios of particles/formula units), not mass ratios — different substances have different molar masses, so a 1:1 mole ratio does NOT correspond to a 1:1 mass ratio. Converting to moles first lets you correctly apply the coefficient ratio; skipping this step and using grams directly would give an incorrect answer unless by coincidence the molar masses happen to be equal.",
+    "stoichiometry_conversions", "concept")
+
+# ---------- MISCONCEPTIONS ----------
+add("Misconception check: If you have more moles of one reactant than another, is that reactant automatically the excess reactant (not limiting)?",
+    "Not necessarily — you must compare moles available to moles required based on the balanced equation's stoichiometric ratio, not just compare raw mole amounts. A reactant with more moles present can still be limiting if the reaction requires an even larger ratio of it relative to the other reactant. You must divide by stoichiometric coefficients to make a fair comparison.",
+    "limiting_reactant", "concept")
+
+add("Misconception check: Does 'percent yield greater than 100%' mean the reaction produced more product than theoretically possible?",
+    "In principle, no reaction can exceed the true theoretical yield, but a percent yield reported above 100% usually indicates a measurement or purity error — commonly, the collected product still contains impurities, residual solvent, or unreacted starting material that add extra mass, making the 'actual yield' appear artificially high. It signals an experimental problem, not a violation of conservation of mass.",
+    "percent_yield", "concept")
+
+add("Misconception check: Is the empirical formula always different from the molecular formula?",
+    "No — they can be identical when the simplest whole-number ratio already matches the actual molecular composition (multiple = 1). For example, H2O's empirical and molecular formulas are the same (H2O), whereas glucose's empirical formula (CH2O) differs from its molecular formula (C6H12O6).",
+    "empirical_formula", "concept")
+
+# ---------- APPLIED ----------
+add("How many moles are in 45.0 g of CaCO3 (molar mass 100.09 g/mol)?",
+    "moles = mass / molar mass = 45.0 g / 100.09 g/mol = 0.4496 mol.<br>Answer: 0.450 mol CaCO3.",
+    "moles", "applied")
+
+add("A compound is 40.0% C, 6.7% H, and 53.3% O by mass. Determine its empirical formula.",
+    "Step 1: assume 100 g sample -> 40.0 g C, 6.7 g H, 53.3 g O.<br>Step 2: convert to moles: C = 40.0/12.01 = 3.33 mol; H = 6.7/1.008 = 6.65 mol; O = 53.3/16.00 = 3.33 mol.<br>Step 3: divide by smallest (3.33): C = 1.00, H = 2.00, O = 1.00.<br>Answer: empirical formula CH2O.",
+    "empirical_formula", "applied")
+
+add("Balance the equation: __C3H8 + __O2 -> __CO2 + __H2O, and interpret the mole ratios.",
+    "Balance C first: C3H8 -> 3 CO2 (3 C). Balance H: C3H8 -> 4 H2O (8 H). Balance O last: right side has 3(2)+4(1) = 10 O, so need 5 O2 on the left.<br>Balanced: C3H8 + 5 O2 -> 3 CO2 + 4 H2O.<br>Mole ratios: 1 mol propane reacts with 5 mol O2 to produce 3 mol CO2 and 4 mol H2O.",
+    "balancing_equations", "applied")
+
+add("Given the balanced equation N2 + 3H2 -> 2NH3, if you start with 4.0 mol N2 and 9.0 mol H2, identify the limiting reactant.",
+    "Required H2 for all the N2: 4.0 mol N2 x (3 mol H2 / 1 mol N2) = 12.0 mol H2 needed, but only 9.0 mol H2 available -> H2 runs out first.<br>Check from H2's side: 9.0 mol H2 x (1 mol N2 / 3 mol H2) = 3.0 mol N2 needed, and 4.0 mol N2 is available (more than enough).<br>Answer: H2 is the limiting reactant (N2 is in excess).",
+    "limiting_reactant", "applied")
+
+add("Using N2 + 3H2 -> 2NH3 with H2 as the limiting reactant (9.0 mol H2 available), calculate the theoretical yield of NH3 in grams (molar mass NH3 = 17.03 g/mol).",
+    "moles NH3 = 9.0 mol H2 x (2 mol NH3 / 3 mol H2) = 6.0 mol NH3.<br>mass NH3 = 6.0 mol x 17.03 g/mol = 102.2 g.<br>Answer: theoretical yield = 102 g NH3.",
+    "percent_yield", "applied")
+
+add("If the reaction in the previous problem actually produces 85.0 g of NH3, calculate the percent yield.",
+    "percent yield = (actual yield / theoretical yield) x 100% = (85.0 g / 102.2 g) x 100% = 83.2%.<br>Answer: 83.2% yield.",
+    "percent_yield", "applied")
+
+add("Trap: A student has 10.0 g of H2 and 10.0 g of O2 reacting via 2H2 + O2 -> 2H2O, and concludes O2 must be limiting because it has the larger molar mass and 'heavier stuff runs out slower, so lighter stuff should be limiting' — actually the student guesses H2 is NOT limiting due to its large mole count from low molar mass. Work the actual problem to find the true limiting reactant.",
+    "Never compare based on mass or intuition about molar mass — convert both to moles and use stoichiometric ratios.<br>moles H2 = 10.0 g / 2.016 g/mol = 4.96 mol.<br>moles O2 = 10.0 g / 32.00 g/mol = 0.3125 mol.<br>Required O2 for all H2: 4.96 mol H2 x (1 mol O2/2 mol H2) = 2.48 mol O2 needed, but only 0.3125 mol available.<br>Answer: O2 is indeed limiting here, but for the correct reason (insufficient moles relative to the stoichiometric ratio, verified by calculation) — not because of an intuitive mass/'heavier runs out slower' argument, which is not a valid method and would fail in other problems with different molar mass ratios.",
+    "limiting_reactant", "applied")
+
+add("Choosing the right approach: You're given the mass of reactant A and asked for the mass of product C in a two-step synthesis (A -> B -> C, each step with its own balanced equation and yield). Outline the correct approach without computing final numbers.",
+    "Do NOT convert straight from mass of A to mass of C using a single combined ratio, and do not skip through moles. Correct approach: (1) convert mass A to moles A; (2) use the mole ratio from equation 1 to find moles B; (3) if a percent yield is given for step 1, multiply moles B by that yield fraction to get actual moles B produced; (4) use the mole ratio from equation 2 to convert moles B to moles C; (5) apply step 2's percent yield if given; (6) convert final moles C to mass using C's molar mass. Each reaction's own stoichiometry and yield must be applied in sequence — you cannot skip directly from A to C's mass without passing through moles at each stage.",
+    "stoichiometry_conversions", "applied")
+
+path = os.path.join(os.path.dirname(__file__), "..", "outputs", "CHEM102_unit06_stoichiometry.txt")
+n = write_tsv(cards, path)
+print(f"Wrote {n} cards to {path}")
+print(summarize(cards))
