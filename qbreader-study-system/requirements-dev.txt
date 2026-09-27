@@ -1,0 +1,4 @@
+-r requirements.txt
+pytest>=8,<10
+# Used only by tests to render small PDFs (text and image-only) on the fly.
+fpdf2>=2.7,<3

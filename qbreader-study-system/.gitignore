@@ -1,0 +1,54 @@
+# ---------------------------------------------------------------
+# PRIVATE / GENERATED DATA — never commit these (even to a private repo)
+# ---------------------------------------------------------------
+# All downloaded QBReader data, the SQLite database, checkpoints, logs,
+# batch files, exports, and extracted source text live here.
+local-data/
+# Your own textbooks, papers, PDFs, articles, and notes.
+local-sources/
+
+# Databases and bulk data anywhere in the tree
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.jsonl
+*.bson
+
+# Documents that are almost always private or copyrighted source material.
+# (Small, permitted, public-domain test fixtures are whitelisted below.)
+*.pdf
+*.epub
+*.docx
+
+# Credentials and local overrides
+.env
+.env.*
+*.key
+*.pem
+secrets*
+config/settings.local.toml
+
+# ---------------------------------------------------------------
+# Python / tooling noise
+# ---------------------------------------------------------------
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+build/
+dist/
+.DS_Store
+Thumbs.db
+
+# ---------------------------------------------------------------
+# Whitelisted small fixtures (synthetic or public domain, documented
+# in tests/fixtures/README.md)
+# ---------------------------------------------------------------
+!tests/fixtures/**/*.jsonl

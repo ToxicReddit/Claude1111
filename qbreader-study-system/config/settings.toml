@@ -1,0 +1,98 @@
+# qbreader-study-system default settings.
+#
+# Do not put secrets here. To change a setting for your computer only, copy
+# the lines you want into config/settings.local.toml (ignored by Git);
+# values there override this file.
+
+[scope]
+# PROJECT SCOPE (persistent). Only questions whose QBReader question-level
+# `difficulty` field is one of these integers are processed: classified,
+# indexed for comparison, used for clue extraction, and exported.
+# QBReader copies each set's difficulty onto its questions at upload time
+# (verified in qbreader/website tools/upload/upsert-packet.js), and admin
+# corrections update the set and its questions together
+# (database/qbreader/admin/update-set-difficulty.js).
+# Records with a missing/invalid difficulty, or a question difficulty that
+# disagrees with its set, are kept in raw storage but excluded and reported.
+# QBReader scale: 6 = Easy College, 7 = Medium College, 8 = Regionals College,
+# 9 = Nationals College, 10 = Open.
+difficulties = [6, 7, 8, 9, 10]
+# Wording used whenever novelty is reported. Keep it tied to the scope.
+collection_label = "QBReader difficulty 6-10 collection"
+
+[paths]
+data_dir = "local-data"
+sources_dir = "local-sources"
+database = "local-data/qbstudy.sqlite3"
+
+[qbreader]
+# Official base URL from https://www.qbreader.org/api-docs
+base_url = "https://www.qbreader.org/api"
+# QBReader documents a limit of 20 requests/second per IP. We stay far below it.
+requests_per_second = 2.0
+max_retries = 5
+backoff_base_seconds = 2.0
+backoff_max_seconds = 120.0
+timeout_seconds = 60
+user_agent = "qbreader-study-system/0.1 (personal study tool)"
+
+[download]
+# Skip sets whose SET-level difficulty (from /set-list) is outside the scope.
+# Sets whose difficulty is missing/invalid are still downloaded so that each
+# question's own difficulty can be checked (and reported).
+prefilter_sets_by_difficulty = true
+download_sets_with_unknown_difficulty = true
+# The default pilot downloads this many packets in total.
+pilot_packets = 3
+# /packet-list is used by QBReader's own site but is not in the API docs.
+# Off by default; only used with --allow-undocumented-packet-list.
+allow_undocumented_packet_list = false
+
+[classification]
+provider = "manual"          # manual | fixture | anthropic
+batch_size = 20
+# Before large batches, a small pilot across subjects must be reviewed.
+require_reviewed_pilot = true
+pilot_per_category = 2
+# Rough planning estimate only (characters per token). Real tokenizers differ.
+chars_per_token_estimate = 4.0
+prompt_version = "cls-prompt-v1"
+max_output_tokens = 4096
+
+[comparison]
+# Lexical thresholds (0-1) on stemmed content-word containment.
+existing_threshold = 0.60
+unresolved_threshold = 0.30
+max_candidates = 12
+prompt_version = "cmp-prompt-v1"
+
+[claims]
+prompt_version = "claim-prompt-v1"
+min_sentence_words = 6
+
+[taxonomy]
+file = "taxonomy/taxonomy_v1.json"
+
+[anthropic]
+# The program only calls the paid Claude API if ALL of the following hold:
+#   1. you pass --provider anthropic
+#   2. allow_paid_api = true (set it yourself in config/settings.local.toml)
+#   3. the official `anthropic` Python package is installed
+#      (python qbstudy.py setup --with-anthropic)
+#   4. your own API credential is available (e.g. ANTHROPIC_API_KEY)
+# A Claude.ai / Claude Code subscription does NOT automatically include API
+# credits. Nothing here is enabled by default, and this provider has only
+# been tested against a simulated client, never the live API.
+allow_paid_api = false
+# Model ID from Anthropic's documentation. Choosing a model is your decision
+# (cost differs by model); change it in settings.local.toml.
+model = "claude-opus-5"
+# Classification is usually fine at lower effort; raise it if quality suffers.
+effort = "medium"
+# Server-side refusal fallback ("default" = Anthropic-recommended routing).
+# Set to "" if your chosen model does not support it.
+fallbacks = "default"
+# Explicit base URL so an unrelated ANTHROPIC_BASE_URL variable is ignored.
+base_url = "https://api.anthropic.com"
+max_retries = 4
+timeout_seconds = 600

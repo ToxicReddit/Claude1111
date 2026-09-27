@@ -1,0 +1,15 @@
+[project]
+name = "qbstudy"
+version = "0.1.0"
+description = "Local QBReader question database, categorization, and source-grounded clue research"
+requires-python = ">=3.11"
+dependencies = ["pypdf>=5.1,<7"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "fpdf2>=2.7,<3"]
+anthropic = ["anthropic>=0.60"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
