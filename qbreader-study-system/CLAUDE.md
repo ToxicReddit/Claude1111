@@ -39,4 +39,6 @@ status and exact resume steps.
 ## Commands (current state — see PROGRESS.md for what exists)
 - Setup (Linux/macOS): `python3 -m venv .venv && .venv/bin/pip install -r requirements-dev.txt`
 - Setup (Windows): `py -3 -m venv .venv` then `.venv\Scripts\pip install -r requirements-dev.txt`
-- Tests: `.venv/bin/python -m pytest` (test suite not written yet)
+- Tests: `.venv/bin/python -m pytest` (Windows: `.venv\Scripts\python -m pytest`);
+  currently 24 foundation tests in tests/test_foundation.py
+- Start here in a new session: HANDOFF.md, then PROGRESS.md

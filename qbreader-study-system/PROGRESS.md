@@ -2,8 +2,9 @@
 
 Last updated: 2026-09-27 (cloud session). Status: **early build, paused on
 the user's request.** This is NOT yet a working end-to-end system: there is
-no downloader, CLI, launcher, classifier workflow, source ingestion, or
-test suite yet. What exists is the foundation listed below.
+no downloader, CLI, launcher, classifier workflow, taxonomy file, or source
+ingestion yet. What exists is the foundation listed below, covered by 24
+pytest tests (tests/test_foundation.py). See HANDOFF.md for the Windows move.
 
 ## Where things are
 - Code lives in this folder (`qbreader-study-system/`) on branch
@@ -62,7 +63,9 @@ test suite yet. What exists is the foundation listed below.
    hedge detection), `records.py` (raw preservation, Extended JSON decoding
    for backups, change detection, difficulty status incl. conflicts,
    bonus parts, missing-from-source flagging).
-5. **Smoke test run** (in-memory DB, SYNTHETIC records, not real data):
+5. **Tests**: `tests/test_foundation.py`, 24 passed (Linux cloud only; not yet
+   run on Windows). The same checks were first run as a smoke test
+   (in-memory DB, SYNTHETIC records, not real data):
    migration applied once and was a no-op on re-run; 5 records stored,
    repeat import → 0 new/5 unchanged; edited answer → 1 changed + 2 raw
    versions kept; difficulty 8 eligible, 3 excluded, question 9 in a
@@ -135,7 +138,8 @@ test suite yet. What exists is the foundation listed below.
 1. `cd qbreader-study-system`
 2. `python3 -m venv .venv && .venv/bin/pip install -r requirements-dev.txt`
    (Windows: `py -3 -m venv .venv` and `.venv\Scripts\pip install -r requirements-dev.txt`)
-3. Read CLAUDE.md, then this file's "Remaining work", starting at item 1.
+3. Run the tests (expect 24 passed), read HANDOFF.md and CLAUDE.md, then this
+   file's "Remaining work", starting at item 1.
 4. Re-check QBReader reachability:
    `curl -sS -o /dev/null -w "%{http_code}\n" https://www.qbreader.org/api/set-list`
 5. Re-verify the API against `qbreader/website` if more than a few weeks
